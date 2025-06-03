@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_aedfb137891e28e0a8c765295bcd25f1 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div style="
+    position: fixed;
+    bottom: 50px;
+    right: 50px;  /* dari left ke right */
+    z-index: 9999;
+    background-color: #fff3cd;
+    padding: 15px;
+    border: 2px solid #ffecb5;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    font-size: 14px;
+    width: 300px;
+">
+    <strong style="color:#856404;">⚠️ Peringatan Kemacetan</strong>
+    <p>Rute utama melewati jalan yang macet. Rute alternatif ditampilkan (warna oranye).</p>
+</div>
+    
+    <div style="position: fixed; bottom: 20px; left: 20px; 
+                width: 300px; background: white; padding: 15px;
+                border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 9999; font-family: 'Segoe UI', Arial, sans-serif;
+                border-top: 4px solid #4285F4;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="font-size: 16px; font-weight: bold; color: #4285F4;">BENGKULU Navigator</div>
+            <div style="font-size: 12px; color: #666;">17:11 Tue, 03 Jun</div>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <div style="display: flex; margin-bottom: 5px;">
+                <div style="width: 8px; height: 8px; background: #0F9D58; border-radius: 50%; margin-top: 5px; margin-right: 8px;"></div>
+                <div style="font-size: 14px;"><b>Start:</b> SMPIT Iqra</div>
+            </div>
+            <div style="display: flex;">
+                <div style="width: 8px; height: 8px; background: #DB4437; border-radius: 50%; margin-top: 5px; margin-right: 8px;"></div>
+                <div style="font-size: 14px;"><b>Tujuan:</b> SMP Negeri 7</div>
+            </div>
+        </div>
+        <div style="background: #F5F5F5; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="font-size: 14px;">Jarak</span>
+                <span style="font-weight: bold; color: #4285F4;">1286 meter</span>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+            <div style="text-align: center; padding: 5px; border-radius: 6px; background: #E6F4EA;">
+                <div><b>Jalan Kaki</b><br>15:18 menit</div>
+            </div>
+            <div style="text-align: center; padding: 5px; border-radius: 6px; background: #FFF3E0;">
+                <div><b>Motor</b><br>02:34 menit</div>
+            </div>
+            <div style="text-align: center; padding: 5px; border-radius: 6px; background: #E3F2FD;">
+                <div><b>Mobil</b><br>01:55 menit</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index:9999;
+        background-color:white;
+        padding:10px;
+        border-radius:8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        font-size:14px;
+        line-height: 1.5;
+    ">
+        <strong>Legenda:</strong><br>
+        <span style="color:#FF0000;">■</span> Jalan Macet<br>
+        <span style="color:#4285F4;">■</span> Rute Utama Lancar<br>
+        <span style="color:#FFA500;">■</span> Rute Alternatif
+    </div>
+    
+    
+            <div class="folium-map" id="map_aedfb137891e28e0a8c765295bcd25f1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_aedfb137891e28e0a8c765295bcd25f1 = L.map(
+                "map_aedfb137891e28e0a8c765295bcd25f1",
+                {
+                    center: [-3.7886416, 102.2638628],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 14,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_c9516159890bcd0c261410c11c544af7 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_c9516159890bcd0c261410c11c544af7.addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_ce68ab2d61683beb1c3d936948cf1647 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_742f12e9e59662acbb80468a66519559 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_742f12e9e59662acbb80468a66519559.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_ee36a7c4251b1388d3a09ff84cba8bba = L.polyline(
+                [[-3.7887764, 102.2633753], [-3.7892957, 102.2643005]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_50a5a5772b8c31772e39656eb2a9d7d1 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_50a5a5772b8c31772e39656eb2a9d7d1.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_56720c6c2ffe05a87a0a5f11c9f88108 = L.polyline(
+                [[-3.7892957, 102.2643005], [-3.7889663, 102.2644236]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_a3239f3f3d8480f1f81be8d6d407e99d = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_a3239f3f3d8480f1f81be8d6d407e99d.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_d3bbd9896e666b9f431ea291ca7c9065 = L.polyline(
+                [[-3.7889663, 102.2644236], [-3.7887832, 102.2644881]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_8e6b468cb7812f7dae6f1a6a2135ad6e = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_8e6b468cb7812f7dae6f1a6a2135ad6e.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_59de9f212189d39bfc5977c97dbc238e = L.polyline(
+                [[-3.7887832, 102.2644881], [-3.78851, 102.2645898]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_10911b30571060b86f7e6ebd20f9ff63 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_10911b30571060b86f7e6ebd20f9ff63.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_f3e545bc4921948e338a4c7a9197e988 = L.polyline(
+                [[-3.78851, 102.2645898], [-3.7884262, 102.2646349]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_1619ca4e640b7367b782b98ff90601af = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_1619ca4e640b7367b782b98ff90601af.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_8c0464c12e0508830f5e980839e2894c = L.polyline(
+                [[-3.7884262, 102.2646349], [-3.788423, 102.2646427]],
+                {"bubblingMouseEvents": true, "color": "#FF0000", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF0000", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_4875115f318108a95358ec979941c22e = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_4875115f318108a95358ec979941c22e.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_a387d70ccd8cff3a984056b257850c1b = L.polyline(
+                [[-3.788423, 102.2646427], [-3.7872408, 102.2649163]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_3b3acafa3f1b760c088e208601425534 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_3b3acafa3f1b760c088e208601425534.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_9efc163a45ba70ac9a3227550ae540e3 = L.polyline(
+                [[-3.7872408, 102.2649163], [-3.787175, 102.2649315]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_935a02d9e9122f7c840ab0a18064b8ee = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_935a02d9e9122f7c840ab0a18064b8ee.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_35e333c3851c7373ea181ea41decfcb7 = L.polyline(
+                [[-3.787175, 102.2649315], [-3.7868787, 102.2650184]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_43b1cb253ac90d6b21d81534d7f846b1 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_43b1cb253ac90d6b21d81534d7f846b1.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_433658ba0c2e9e94515d933b1968e7a1 = L.polyline(
+                [[-3.7868787, 102.2650184], [-3.7866248, 102.2650888]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_1244dfe61221f7dd9a3bf9ee417fb673 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_1244dfe61221f7dd9a3bf9ee417fb673.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_49cf0570fe9a5507fe81b2393bc80c56 = L.polyline(
+                [[-3.7866248, 102.2650888], [-3.7865692, 102.2651038]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_3a544f9dc35643d81d9ffed8bfa8eaa3 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_3a544f9dc35643d81d9ffed8bfa8eaa3.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_e15a0214885057d7069def528e2dc625 = L.polyline(
+                [[-3.7865692, 102.2651038], [-3.7862626, 102.2651428]],
+                {"bubblingMouseEvents": true, "color": "#FF0000", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF0000", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_5d483396dcb00466d72504579b61c759 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_5d483396dcb00466d72504579b61c759.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_abe79f01ec72959342daeaaebb866905 = L.polyline(
+                [[-3.7862626, 102.2651428], [-3.7854248, 102.265139]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_2f02618194be88192d1ca38c4c814037 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_2f02618194be88192d1ca38c4c814037.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_e3523ae00f89158010a735b394c0bf62 = L.polyline(
+                [[-3.7854248, 102.265139], [-3.7838438, 102.2652883]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_35e1b41445c34347c69a950f74c93378 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_35e1b41445c34347c69a950f74c93378.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_62e21273ab22bc0fee381022cfb55121 = L.polyline(
+                [[-3.7838438, 102.2652883], [-3.783574, 102.2653193]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_3df23759bede9201cac37f871e8acea3 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_3df23759bede9201cac37f871e8acea3.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_e195655aad2ee31604a0eda6f396d092 = L.polyline(
+                [[-3.783574, 102.2653193], [-3.7824999, 102.2653326]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_8446043407acddf96954627a73733f27 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_8446043407acddf96954627a73733f27.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_65545d26a8b2c6929fe24d136f9bf59a = L.polyline(
+                [[-3.7824999, 102.2653326], [-3.7819703, 102.2652614]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_db808197f966dc2a472ce7898ea61811 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_db808197f966dc2a472ce7898ea61811.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_a85c507bb135ee53af3b5cffb8e440ea = L.polyline(
+                [[-3.7819703, 102.2652614], [-3.781325, 102.2647447]],
+                {"bubblingMouseEvents": true, "color": "#FF0000", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF0000", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_6ff538b698afaa7863ca53461eb81fa3 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_6ff538b698afaa7863ca53461eb81fa3.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_8b5aa997484b7bb090cc315e9f87b2d1 = L.polyline(
+                [[-3.781325, 102.2647447], [-3.7809356, 102.2643863]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_258afe03490d9cde695286e51e368e43 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_258afe03490d9cde695286e51e368e43.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_cc81e2a8b6ee2a3f7d066fc71bbfbd89 = L.polyline(
+                [[-3.7809356, 102.2643863], [-3.7808625, 102.2643089]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_6388787eef1726b1d61ba758e21b1528 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_6388787eef1726b1d61ba758e21b1528.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_16a9179e0a958ff825d4248ffef50cbb = L.polyline(
+                [[-3.7808625, 102.2643089], [-3.7806344, 102.2637273]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_c431103f3a79b314e06465c17521b49b = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_c431103f3a79b314e06465c17521b49b.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_a55b23349271e47fd87daf6dfc5cb60f = L.polyline(
+                [[-3.7806344, 102.2637273], [-3.7805672, 102.2635147]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_5ffa68f092cae13398f6a384c3c08871 = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_5ffa68f092cae13398f6a384c3c08871.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_8ec4a8a3fc11ca9848e493fc8f01db94 = L.polyline(
+                [[-3.7805672, 102.2635147], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var poly_line_763e83d88e7ccc8b217485bf2ea6098a = L.polyline(
+                [[-3.7882898, 102.2635116], [-3.7887764, 102.2633753], [-3.7884312, 102.2628455], [-3.7883801, 102.2628057], [-3.7879996, 102.2625166], [-3.787932, 102.2624591], [-3.7878575, 102.262403], [-3.7876836, 102.2622793], [-3.7876319, 102.262233], [-3.7874087, 102.2620619], [-3.787252, 102.2619392], [-3.7870108, 102.261745], [-3.7867544, 102.2615491], [-3.7863575, 102.2612493], [-3.785635, 102.2609405], [-3.785259, 102.2607582], [-3.785088, 102.2606912], [-3.7847552, 102.2606588], [-3.7847126, 102.2606563], [-3.7843679, 102.2607067], [-3.7840631, 102.2607103], [-3.7839078, 102.2606353], [-3.7830821, 102.2612988], [-3.7830285, 102.2613187], [-3.7828258, 102.2610936], [-3.781092, 102.2620787], [-3.7802216, 102.2623398], [-3.7805362, 102.2633907]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": "5,10", "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            poly_line_763e83d88e7ccc8b217485bf2ea6098a.bindTooltip(
+                `<div>
+                     Rute Alternatif: 1315 meter
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5764853ad83c9b925dfba8b32708c5f3 = L.marker(
+                [-3.7886416, 102.2638628],
+                {
+}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var icon_216cfff4ca790ed46a7bac1a97878e81 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5fe792f7e0aaf5b795ff06d8b24ebaba = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d870488bc22cc7bdc7b555e73dfa55c6 = $(`<div id="html_d870488bc22cc7bdc7b555e73dfa55c6" style="width: 100.0%; height: 100.0%;"><b>PERINGATAN KEMACETAN TERDETEKSI!</b><br>Disarankan memilih rute alternatif.</div>`)[0];
+                popup_5fe792f7e0aaf5b795ff06d8b24ebaba.setContent(html_d870488bc22cc7bdc7b555e73dfa55c6);
+            
+        
+
+        marker_5764853ad83c9b925dfba8b32708c5f3.bindPopup(popup_5fe792f7e0aaf5b795ff06d8b24ebaba)
+        ;
+
+        
+    
+    
+                marker_5764853ad83c9b925dfba8b32708c5f3.setIcon(icon_216cfff4ca790ed46a7bac1a97878e81);
+            
+    
+            var marker_35b7ef9d5a849f4adb2301bc48a49c55 = L.marker(
+                [-3.7886416, 102.2638628],
+                {
+}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var icon_0ae0d85405e9d0ccf153874d2608734d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "play",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_06ec288856ed7040f7c70fc90425a14e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f252d583c036506b18f9d19bc2febd49 = $(`<div id="html_f252d583c036506b18f9d19bc2febd49" style="width: 100.0%; height: 100.0%;"><b>Start:</b> SMPIT Iqra</div>`)[0];
+                popup_06ec288856ed7040f7c70fc90425a14e.setContent(html_f252d583c036506b18f9d19bc2febd49);
+            
+        
+
+        marker_35b7ef9d5a849f4adb2301bc48a49c55.bindPopup(popup_06ec288856ed7040f7c70fc90425a14e)
+        ;
+
+        
+    
+    
+                marker_35b7ef9d5a849f4adb2301bc48a49c55.setIcon(icon_0ae0d85405e9d0ccf153874d2608734d);
+            
+    
+            var marker_69dd4fbf148648ec55e2770c9921c91c = L.marker(
+                [-3.7808171, 102.2631471],
+                {
+}
+            ).addTo(map_aedfb137891e28e0a8c765295bcd25f1);
+        
+    
+            var icon_5ee0f6b4867a6219b4e15c4b1d5ddc4d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "stop",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9ea412fbc35efb74ee3bebd3293b8c8f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6c7700daa74e8cec8521c0ac69c149de = $(`<div id="html_6c7700daa74e8cec8521c0ac69c149de" style="width: 100.0%; height: 100.0%;"><b>Tujuan:</b> SMP Negeri 7</div>`)[0];
+                popup_9ea412fbc35efb74ee3bebd3293b8c8f.setContent(html_6c7700daa74e8cec8521c0ac69c149de);
+            
+        
+
+        marker_69dd4fbf148648ec55e2770c9921c91c.bindPopup(popup_9ea412fbc35efb74ee3bebd3293b8c8f)
+        ;
+
+        
+    
+    
+                marker_69dd4fbf148648ec55e2770c9921c91c.setIcon(icon_5ee0f6b4867a6219b4e15c4b1d5ddc4d);
+            
+</script>
+</html>
