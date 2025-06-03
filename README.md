@@ -46,9 +46,7 @@ Menggunakan algoritma:
 
 ## 📈 Strategi Evaluasi Model dan Performa Sistem
 
-### 📅 1. Pendahuluan
-
-Untuk mengevaluasi performa sistem prediksi kemacetan lalu lintas berbasis AI yang terintegrasi dengan peta interaktif, kami melakukan **lima kali percobaan** pada **satu model AI dan satu sistem peta**, dengan lokasi atau kondisi berbeda pada setiap percobaan (Map 1 hingga Map 5).
+Untuk mengevaluasi performa sistem prediksi kemacetan lalu lintas berbasis AI yang terintegrasi dengan peta interaktif, kami melakukan **lima kali percobaan** dengan lokasi atau kondisi berbeda pada setiap percobaan (Percobaan ke-1 hingga Percobaan ke-5).
 
 Setiap percobaan mengukur efisiensi pemuatan peta, visualisasi data kemacetan, serta performa fitur interaktif.
 
@@ -65,11 +63,11 @@ Setiap percobaan mengukur efisiensi pemuatan peta, visualisasi data kemacetan, s
 
 | Percobaan | Total Waktu Eksekusi |
 | --------- | -------------------- |
-| Map 1     | 206.18 detik         |
-| Map 2     | 153.73 detik         |
-| Map 3     | 156.09 detik         |
-| Map 4     | **141.69 detik** ✅   |
-| Map 5     | 156.44 detik         |
+|  1        | 206.18 detik         |
+| 2         | 153.73 detik         |
+| 3         | 156.09 detik         |
+| 4         | 141.69 detik         |
+| 5         | 156.44 detik         |
 
 #### b. Mean Execution Time (MET)
 
@@ -85,17 +83,17 @@ $$
 
 | Percobaan | RPI (%)       |
 | --------- | ------------- |
-| Map 1     | **-27.26%** ❌ |
-| Map 2     | +5.12%        |
-| Map 3     | +3.67%        |
-| Map 4     | **+12.57%** ✅ |
-| Map 5     | +3.45%        |
+| 1         | -27.26%       |
+| 2         | +5.12%        |
+| 3         | +3.67%        |
+| 4         | +12.57%       |
+| 5         | +3.45%        |
 
 ### 🔹 4. Insight dan Interpretasi
 
-* **Map 1** lambat karena merupakan **eksekusi pertama (cold start)**, harus mengunduh model AI, peta, dan layer data.
-* Setelah Map 2–5, waktu eksekusi menjadi **lebih efisien** karena sistem telah cache model dan elemen visual.
-* Map 4 menunjukkan hasil **terbaik**, cocok dijadikan baseline pengembangan sistem.
+* **Percobaan ke-1** lambat karena merupakan **eksekusi pertama (cold start)**, harus mengunduh model AI, peta, dan layer data.
+* Setelah Percobaan 2–5, waktu eksekusi menjadi **lebih efisien** karena sistem telah cache model dan elemen visual.
+* Percobaan 4 menunjukkan hasil **terbaik**, cocok dijadikan baseline pengembangan sistem.
 
 ---
 
