@@ -1,6 +1,5 @@
-<p align="center">
-  <img src="URL_GAMBAR_BANNER" alt="Smart City Bengkulu" width="100%" />
-</p>
+![Bengkulu](https://github.com/user-attachments/assets/9f4ff114-2258-45ac-b06c-c45c6ee69a63)
+
 
 # 🚦 Smart City: Sistem Prediksi & Navigasi Kemacetan Bengkulu
 
@@ -145,6 +144,17 @@ Sistem prediksi kemacetan lalu lintas ini terdiri dari beberapa tahapan utama:
 ## 📊 Strategi Evaluasi Model dan Performa Sistem
 
 Untuk menilai performa sistem prediksi kemacetan lalu lintas berbasis AI, dilakukan **10 kali pengujian** dalam berbagai kondisi. Fokus evaluasi adalah efisiensi sistem secara keseluruhan dalam memproses data graf jalan, memuat model prediksi, serta merender visualisasi peta interaktif.
+
+## Dokumentasi Gambar Percobaan
+
+| ![Percobaan ke-1](https://github.com/user-attachments/assets/b86d1bf5-af5c-426e-9afe-0070515df1d2) |![Percobaan ke-2](https://github.com/user-attachments/assets/6b66b9e6-a584-4506-9c0c-9561369f71c8) | ![Percobaan ke-3](https://github.com/user-attachments/assets/d0aa0780-fdc2-43c8-a5c5-d56c03dd076b) | ![Percobaan ke-4](https://github.com/user-attachments/assets/addeb447-92fa-4692-ac3d-610a4d3844b6)|
+|---|---|---|---|
+
+| ![Percobaan ke-5](https://github.com/user-attachments/assets/2fff183f-5400-4452-8620-a10d53ff91cc) | ![Percobaan ke-6](https://github.com/user-attachments/assets/fec9a7bf-4ec3-422b-8eba-d38575684fc9) | ![Percobaan ke-7](https://github.com/user-attachments/assets/9cb309b0-88cc-4ae5-9935-32c275b2a424) | ![Percobaan ke-8](https://github.com/user-attachments/assets/a64effda-e723-4470-9fe2-d1f5e6163fbb) |
+|---|---|---|---|
+
+| ![Percobaan ke-9](https://github.com/user-attachments/assets/59e7bb81-0fa2-4443-8fa1-e2326f0817a9) | ![Percobaan ke-10](https://github.com/user-attachments/assets/1b695143-008c-42a9-84c6-b58bd3df22da) |
+|---|---|
 
 ---
 
