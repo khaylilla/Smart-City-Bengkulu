@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_335045396302ac1856ef478dbb4fd6e8 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+    <div style="
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        z-index: 9999;
+        background-color: #fff3cd;
+        padding: 15px;
+        border: 2px solid #ffecb5;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        font-size: 14px;
+        width: 300px;
+    ">
+        <strong style="color:#856404;">⚠️ Peringatan Kemacetan</strong>
+        <p>Rute utama melewati jalan yang macet. Rute alternatif ditampilkan (warna oranye).</p>
+    </div>
+    
+    
+    <div style="position: fixed; bottom: 20px; left: 20px; 
+                width: 300px; background: white; padding: 15px;
+                border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 9999; font-family: 'Segoe UI', Arial, sans-serif;
+                border-top: 4px solid #4285F4;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="font-size: 16px; font-weight: bold; color: #4285F4;">BENGKULU Navigator</div>
+            <div style="font-size: 12px; color: #666;">20:03 Wed, 04 Jun</div>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <div style="display: flex; margin-bottom: 5px;">
+                <div style="width: 8px; height: 8px; background: #0F9D58; border-radius: 50%; margin-top: 5px; margin-right: 8px;"></div>
+                <div style="font-size: 14px;"><b>Start:</b> Kantor Pos Padang Jati</div>
+            </div>
+            <div style="display: flex;">
+                <div style="width: 8px; height: 8px; background: #DB4437; border-radius: 50%; margin-top: 5px; margin-right: 8px;"></div>
+                <div style="font-size: 14px;"><b>Tujuan:</b> Radio Republik Indonesia, Bengkulu</div>
+            </div>
+        </div>
+        <div style="background: #F5F5F5; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="font-size: 14px;">Jarak</span>
+                <span style="font-weight: bold; color: #4285F4;">637 meter</span>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+            <div style="text-align: center; padding: 5px; border-radius: 6px; background: #E6F4EA;">
+                <div><b>Jalan Kaki</b><br>07:34 menit</div>
+            </div>
+            <div style="text-align: center; padding: 5px; border-radius: 6px; background: #FFF3E0;">
+                <div><b>Motor</b><br>01:16 menit</div>
+            </div>
+            <div style="text-align: center; padding: 5px; border-radius: 6px; background: #E3F2FD;">
+                <div><b>Mobil</b><br>00:57 menit</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index:9999;
+        background-color:white;
+        padding:10px;
+        border-radius:8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        font-size:14px;
+        line-height: 1.5;
+    ">
+        <strong>Note:</strong><br>
+        <span style="color:#FF0000;">■</span> Jalan Macet<br>
+        <span style="color:#4285F4;">■</span> Rute Utama Lancar<br>
+        <span style="color:#FFA500;">■</span> Rute Alternatif
+    </div>
+    
+    
+            <div class="folium-map" id="map_335045396302ac1856ef478dbb4fd6e8" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_335045396302ac1856ef478dbb4fd6e8 = L.map(
+                "map_335045396302ac1856ef478dbb4fd6e8",
+                {
+                    center: [-3.8027964, 102.2757033],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 14,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_2c8819a18b792c4c5d458236513f2fbe = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_2c8819a18b792c4c5d458236513f2fbe.addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_3cb6f78ae572dfaee4abcc76face2ac5 = L.polyline(
+                [[-3.803529, 102.2754585], [-3.8040109, 102.2748381]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_654ec38830ad01c3d4894601571b15cd = L.polyline(
+                [[-3.8040109, 102.2748381], [-3.803504, 102.2743733]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_5570b7b0725e218ffda11bdab97e5231 = L.polyline(
+                [[-3.803504, 102.2743733], [-3.8034252, 102.2742971]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_314d9cc42dcde71a21e0cd002d7f45f2 = L.polyline(
+                [[-3.8034252, 102.2742971], [-3.8030416, 102.2739761]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_c802c5f1ec47a76faadb125da28f774a = L.polyline(
+                [[-3.8030416, 102.2739761], [-3.8028429, 102.273791]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_69884ac8da39e8de9a3f4067c278724b = L.polyline(
+                [[-3.8028429, 102.273791], [-3.8027882, 102.2737434]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_3bb16088804beb1a6700337e9c480272 = L.polyline(
+                [[-3.8027882, 102.2737434], [-3.80261, 102.2735851]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_a1581380db5839123a667d64f2f20e45 = L.polyline(
+                [[-3.80261, 102.2735851], [-3.80253, 102.2735139]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_a15cde38864413768dad82d9deeb1b06 = L.polyline(
+                [[-3.80253, 102.2735139], [-3.8022523, 102.2732777]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_9b5ccaf15760adbe9af00064597a8005 = L.polyline(
+                [[-3.8022523, 102.2732777], [-3.8020759, 102.2731364]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_c4392b4830d186d71389710e62bd4c7b = L.polyline(
+                [[-3.8020759, 102.2731364], [-3.8020058, 102.2730803]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_9a0b7b772fca3191d9c0a9e4aeeae8ee = L.polyline(
+                [[-3.8020058, 102.2730803], [-3.8011297, 102.272584]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_a87c2dfc4e77659a910c7d355e6c5fb8 = L.polyline(
+                [[-3.8011297, 102.272584], [-3.8007737, 102.2724535]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_c8253750cd1cdfebec75ac1f0d5b7fb2 = L.polyline(
+                [[-3.8007737, 102.2724535], [-3.8005185, 102.272356]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_c8ed57a4abfed49469220750411b03c0 = L.polyline(
+                [[-3.8005185, 102.272356], [-3.8004977, 102.2723849]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_79caad37bfb91713a1a8c683d92c899a = L.polyline(
+                [[-3.8004977, 102.2723849], [-3.8003824, 102.2724048]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_bf533620992cfc2e8542fcb3cd67febd = L.polyline(
+                [[-3.8003824, 102.2724048], [-3.800321, 102.2722893]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_fc52227e630ba23ec5fdf42e33e0bc02 = L.polyline(
+                [[-3.800321, 102.2722893], [-3.8000829, 102.2723397]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var poly_line_fb3e9971da2d4c2933645b2e0387840a = L.polyline(
+                [[-3.8000829, 102.2723397], [-3.8000165, 102.2723537]],
+                {"bubblingMouseEvents": true, "color": "#4285F4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4285F4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var marker_18a5432c9eb90cc85868ed85a303c6a4 = L.marker(
+                [-3.8027964, 102.2757033],
+                {
+}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var icon_d5dc24e7bc3e2973db54c423a8423efc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "play",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_61b89dfc7f38fdf700753d4a8d07797f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a6605a040746dca55aff46bf3527b5c2 = $(`<div id="html_a6605a040746dca55aff46bf3527b5c2" style="width: 100.0%; height: 100.0%;"><b>Start:</b> Kantor Pos Padang Jati</div>`)[0];
+                popup_61b89dfc7f38fdf700753d4a8d07797f.setContent(html_a6605a040746dca55aff46bf3527b5c2);
+            
+        
+
+        marker_18a5432c9eb90cc85868ed85a303c6a4.bindPopup(popup_61b89dfc7f38fdf700753d4a8d07797f)
+        ;
+
+        
+    
+    
+                marker_18a5432c9eb90cc85868ed85a303c6a4.setIcon(icon_d5dc24e7bc3e2973db54c423a8423efc);
+            
+    
+            var marker_2c8ab25976b713b2293b94cfbb94aa8f = L.marker(
+                [-3.7997612, 102.2720625],
+                {
+}
+            ).addTo(map_335045396302ac1856ef478dbb4fd6e8);
+        
+    
+            var icon_991ef878b52c2aaf2744635a435b5b5d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "stop",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1089047138572a5719f35aede994ba4a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_044bf140baf2a405eef55efc08db85ab = $(`<div id="html_044bf140baf2a405eef55efc08db85ab" style="width: 100.0%; height: 100.0%;"><b>Tujuan:</b> Radio Republik Indonesia, Bengkulu</div>`)[0];
+                popup_1089047138572a5719f35aede994ba4a.setContent(html_044bf140baf2a405eef55efc08db85ab);
+            
+        
+
+        marker_2c8ab25976b713b2293b94cfbb94aa8f.bindPopup(popup_1089047138572a5719f35aede994ba4a)
+        ;
+
+        
+    
+    
+                marker_2c8ab25976b713b2293b94cfbb94aa8f.setIcon(icon_991ef878b52c2aaf2744635a435b5b5d);
+            
+</script>
+</html>
